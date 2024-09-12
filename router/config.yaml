@@ -4,3 +4,6 @@
 # This file is used to debugging purposes only.
 
 version: "1"
+execution_config:
+  file:
+    path: "./__schemas/config.json"

@@ -57,6 +57,86 @@ _For any questions, feedback, or support, please [contact](https://wundergraph.c
 
 We welcome contributions from the community! Whether it's fixing a bug, adding new features, or improving documentation, your help is greatly appreciated. Please take a look in our [Contributing Guide](CONTRIBUTING.md) to get started.
 
+
+## Local Stress Testing Setup
+
+Start Infrastructure
+```
+make edfs-infra-up
+docker compose --file docker-compose.sergio.yml --profile dev up --detach
+```
+
+Subgraph running:
+```
+cd demo/cmd/all
+go run main.go 
+```
+
+The firewall request should appear and it needs to be allowed.
+
+Please note the terminal would not print any console output in case of success
+
+
+## Apollo Router Setup 
+
+```
+cd apollo
+```
+Installation
+```
+curl -sSL https://router.apollo.dev/download/nix/latest | sh
+```
+Execution
+```
+./router --config router.yml --supergraph supergraph.yml &
+```
+
+## Cosmo Router Setup
+```
+cd router
+go run cmd/router/main.go 
+```
+Please note the terminal would not print any console output in case of success
+
+## Grafbase Router Setup
+
+Installation requires `bun` under the folder `~/.grafbase/bun/bun`
+
+
+[This](https://github.com/grafbase/grafbase/issues/2046#issuecomment-2305165777) is the workaround approach recommended by the grafbase developer
+
+[Download the binary](https://github.com/oven-sh/bun/releases/tag/bun-v1.1.17) for your reference architecture
+
+and copy it under `~/.grafbase/bun/bun` 
+
+Add `~/.grafbase/bun/bun` to your `PATH`
+
+
+Run grafbase
+```
+➜ cd grafbase
+➜ grafbase dev &
+Grafbase CLI 0.79.0
+
+📡 Listening on port 4000
+
+Run grafbase publish --dev to add subgraphs to the federated graph
+
+- Pathfinder: http://127.0.0.1:4000
+- Endpoint:   http://127.0.0.1:4000/graphql
+
+❌ Failed to compose schema after adding subgraph availability. Errors:
+- None of the subgraphs defines root query fields.
+🧩 Successfully composed schema after adding subgraph employees
+🧩 Successfully composed schema after adding subgraph family
+🧩 Successfully composed schema after adding subgraph hobbies
+🧩 Successfully composed schema after adding subgraph mood
+🧩 Successfully composed schema after adding subgraph products
+🧩 Successfully composed schema after adding subgraph test1
+```
+
+To perform the stress tests please check the relative [README.md](router-tests/testdata/queries/README.md) file
+
 ## License
 
 Cosmo is licensed under the [Apache License, Version 2.0](LICENSE).
